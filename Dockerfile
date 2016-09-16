@@ -51,7 +51,8 @@ RUN curl -fsSL http://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war
 # Prep Jenkins Directories
 RUN mkdir /var/log/jenkins
 RUN mkdir /var/cache/jenkins
-RUN chown -R jenkins "$JENKINS_HOME" /usr/share/jenkins/ref
+RUN chown -R jenkins:jenkins "$JENKINS_HOME" 
+RUN chown -R jenkins:jenkins /usr/share/jenkins/ref
 RUN chown -R jenkins:jenkins /var/log/jenkins
 RUN chown -R jenkins:jenkins /var/cache/jenkins
 
@@ -80,7 +81,7 @@ COPY jenkins.sh /usr/local/bin/jenkins.sh
 
 COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 COPY plugins.txt /plugins.txt
-RUN /usr/local/bin/install-plugins.sh jclouds-jenkins ssh-slaves token-macro durable-task docker kubernetes blueocean cloudbees-folder
+RUN /usr/local/bin/install-plugins.sh workflow-support:2.4 jclouds-jenkins ssh-slaves token-macro durable-task docker kubernetes cloudbees-folder ldap blueocean workflow-aggregator
 
 RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
 

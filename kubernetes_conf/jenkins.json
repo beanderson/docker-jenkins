@@ -31,7 +31,7 @@
                 "path": "/robots.txt",
                 "port": 8080
               },
-              "initialDelaySeconds": 120,
+              "initialDelaySeconds": 60,
               "timeoutSeconds": 5
             },
             "ports": [
@@ -55,7 +55,10 @@
         "volumes": [
           {
             "name": "jenkins-data",
-            "emptyDir": {}
+            "awsElasticBlockStore": {
+              "volumeID": "vol-4b26dfc8",
+              "fsType": "ext4"
+            }
           }
         ],
         "imagePullSecrets": [
