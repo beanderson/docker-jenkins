@@ -1,0 +1,32 @@
+{
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "jenkins",
+    "namespace": "default",
+    "labels": {
+      "name": "jenkins",
+      "app": "jenkins"
+    }
+  },
+  "spec": {
+    "type": "LoadBalancer",
+    "ports": [
+      {
+        "name": "ui",
+        "protocol": "TCP",
+        "port": 8080,
+        "targetPort": 8080
+      },
+      {
+        "name": "slave-connection",
+        "protocol": "TCP",
+        "port": 50000,
+        "targetPort": 50000
+      }
+    ],
+    "selector": {
+      "name": "jenkins"
+    }
+  }
+}
