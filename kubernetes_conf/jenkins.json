@@ -28,7 +28,7 @@
         "containers": [
           {
             "name": "jenkins",
-            "image": "quay.io/prsn/jenkins:master",
+            "image": "quay.io/prsn/jenkins:master.1",
             "livenessProbe": {
               "httpGet": {
                 "path": "/robots.txt",
