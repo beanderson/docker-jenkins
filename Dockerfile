@@ -45,7 +45,7 @@ VOLUME /var/jenkins_home
 # or config file with your custom jenkins Docker image.
 RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
-ADD http://mirrors.jenkins-ci.org/war/$JENKINS_VERSION/ /usr/share/jenkins/jenkins.war 
+ADD http://mirrors.jenkins-ci.org/war/$JENKINS_VERSION/jenkins.war /usr/share/jenkins/jenkins.war 
 # Install Jenkins
 # RUN curl -fsSL http://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/$JENKINS_VERSION/jenkins-war-$JENKINS_VERSION.war -o /usr/share/jenkins/jenkins.war \
 #  && echo "$JENKINS_SHA /usr/share/jenkins/jenkins.war" | sha1sum -c -
@@ -55,6 +55,7 @@ RUN mkdir /var/log/jenkins \
     && mkdir /var/cache/jenkins \
     && chown -R jenkins:jenkins "$JENKINS_HOME" \
     && chown -R jenkins:jenkins /usr/share/jenkins/ref \
+    && chown -R jenkins:jenkins /usr/share/jenkins/jenkins.war \
     && chown -R jenkins:jenkins /var/log/jenkins \
     && chown -R jenkins:jenkins /var/cache/jenkins
 
@@ -72,7 +73,7 @@ COPY jenkins.sh /usr/local/bin/jenkins.sh
 
 COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 COPY plugins.txt /plugins.txt
-RUN /usr/local/bin/install-plugins.sh workflow-support jclouds-jenkins ssh-slaves token-macro durable-task docker kubernetes cloudbees-folder ldap blueocean workflow-aggregator
+RUN /usr/local/bin/install-plugins.sh workflow-support jclouds-jenkins ssh-slaves token-macro durable-task docker kubernetes cloudbees-folder active-directory blueocean workflow-aggregator
 
 RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
 

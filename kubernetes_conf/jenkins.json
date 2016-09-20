@@ -28,7 +28,7 @@
         "containers": [
           {
             "name": "jenkins",
-            "image": "quay.io/prsn/jenkins:master.1",
+            "image": "quay.io/prsn/jenkins:master.3",
             "livenessProbe": {
               "httpGet": {
                 "path": "/robots.txt",
@@ -55,6 +55,9 @@
             ]
           }
         ],
+        "nodeSelector": {
+          "failure-domain.beta.kubernetes.io/zone": "us-west-2c"
+        },
         "volumes": [
           {
             "name": "jenkins-data",
