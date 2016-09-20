@@ -34,6 +34,7 @@ ENV JENKINS_OPTS="--logfile=/var/log/jenkins/jenkins.log  --webroot=/var/cache/j
 
 # Jenkins is run with user `jenkins`, uid = 1000
 RUN useradd -d "$JENKINS_HOME" -u 1000 -m -s /bin/bash jenkins
+RUN echo "jenkins  ALL=(ALL)  ALL" >> /etc/sudoers
 
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
@@ -50,12 +51,12 @@ ADD http://mirrors.jenkins-ci.org/war/$JENKINS_VERSION/ /usr/share/jenkins/jenki
 #  && echo "$JENKINS_SHA /usr/share/jenkins/jenkins.war" | sha1sum -c -
 
 # Prep Jenkins Directories
-RUN mkdir /var/log/jenkins
-RUN mkdir /var/cache/jenkins
-RUN chown -R jenkins:jenkins "$JENKINS_HOME" 
-RUN chown -R jenkins:jenkins /usr/share/jenkins/ref
-RUN chown -R jenkins:jenkins /var/log/jenkins
-RUN chown -R jenkins:jenkins /var/cache/jenkins
+RUN mkdir /var/log/jenkins \
+    && mkdir /var/cache/jenkins \
+    && chown -R jenkins:jenkins "$JENKINS_HOME" \
+    && chown -R jenkins:jenkins /usr/share/jenkins/ref \
+    && chown -R jenkins:jenkins /var/log/jenkins \
+    && chown -R jenkins:jenkins /var/cache/jenkins
 
 # Expose Ports for web and slave agents
 EXPOSE 8080
@@ -64,17 +65,6 @@ EXPOSE 50000
 COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 COPY executors.groovy /usr/share/jenkins/ref/init.groovy.d/executors.groovy
 
-# # Copy in the Docker certs, we'll use /usr/local/etc for them
-# COPY certs/ca-key.pem /usr/local/etc/jenkins/certs/ca-key.pem
-# COPY certs/ca.pem /usr/local/etc/jenkins/certs/ca.pem
-# COPY certs/cert.pem /usr/local/etc/jenkins/certs/cert.pem
-# COPY certs/key.pem /usr/local/etc/jenkins/certs/key.pem
-
-# # Make sure cert permissions are set correctly
-# RUN chmod +r /usr/local/etc/jenkins/certs/ca.pem
-# RUN chmod +r /usr/local/etc/jenkins/certs/cert.pem
-# RUN chown -R jenkins:jenkins /usr/local/etc/jenkins
-
 USER jenkins
 
 COPY jenkins-support /usr/local/bin/jenkins-support
@@ -82,7 +72,7 @@ COPY jenkins.sh /usr/local/bin/jenkins.sh
 
 COPY install-plugins.sh /usr/local/bin/install-plugins.sh
 COPY plugins.txt /plugins.txt
-RUN /usr/local/bin/install-plugins.sh workflow-support:2.4 jclouds-jenkins ssh-slaves token-macro durable-task docker kubernetes cloudbees-folder ldap blueocean workflow-aggregator
+RUN /usr/local/bin/install-plugins.sh workflow-support jclouds-jenkins ssh-slaves token-macro durable-task docker kubernetes cloudbees-folder ldap blueocean workflow-aggregator
 
 RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
 
