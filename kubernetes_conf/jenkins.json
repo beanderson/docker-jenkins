@@ -28,7 +28,8 @@
         "containers": [
           {
             "name": "jenkins",
-            "image": "quay.io/prsn/jenkins:master.3",
+            "image": "quay.io/prsn/jenkins:master",
+            "imagePullPolicy": "Always",
             "livenessProbe": {
               "httpGet": {
                 "path": "/robots.txt",
