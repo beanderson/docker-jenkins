@@ -5,8 +5,7 @@
     "name": "jenkins",
     "namespace": "default",
     "labels": {
-      "name": "jenkins",
-      "app": "jenkins"
+      "name": "jenkins"
     }
   },
   "spec": {
@@ -17,8 +16,7 @@
     "template": {
       "metadata": {
         "labels": {
-          "name": "jenkins",
-          "app": "jenkins"
+          "name": "jenkins"
         }
       },
       "spec": {
@@ -35,15 +33,17 @@
                 "path": "/robots.txt",
                 "port": 8080
               },
-              "initialDelaySeconds": 60,
+              "initialDelaySeconds": 30,
               "timeoutSeconds": 5
             },
             "ports": [
               {
+                "name": "jenkins-http",
                 "containerPort": 8080,
                 "protocol": "TCP"
               },
               {
+                "name": "jenkins-disco",
                 "containerPort": 50000,
                 "protocol": "TCP"
               }
@@ -52,6 +52,41 @@
               {
                 "name": "jenkins-data",
                 "mountPath": "/var/jenkins_home"
+              }
+            ]
+          },
+          {
+            "name": "jenkins-nginx",
+            "image": "quay.io/prsn/jenkins:nginx",
+            "imagePullPolicy": "Always",
+            "env": [
+              {
+                "name": "SERVICE_HOST_ENV_NAME",
+                "value": "JENKINS_SERVICE_HOST"
+              },
+              {
+                "name": "SERVICE_PORT_ENV_NAME",
+                "value": "JENKINS_SERVICE_PORT_UI"
+              },
+              {
+                "name": "ENABLE_SSL",
+                "value": "false"
+              },
+              {
+                "name": "ENABLE_BASIC_AUTH",
+                "value": "false"
+              }
+            ],
+            "ports": [
+              {
+                "name": "ssl-proxy-http",
+                "containerPort": 80,
+                "protocol": "TCP"
+              },
+              {
+                "name": "ssl-proxy-https",
+                "containerPort": 443,
+                "protocol": "TCP"
               }
             ]
           }

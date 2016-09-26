@@ -1,0 +1,33 @@
+{
+  "kind": "Service",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "nginx-ssl-proxy",
+    "namespace": "default",
+    "labels": {
+      "name": "nginx",
+      "role": "ssl-proxy"
+    }
+  },
+  "spec": {
+    "type": "LoadBalancer",
+    "ports": [
+      {
+        "name": "http",
+        "protocol": "TCP",
+        "port": 80,
+        "targetPort": "ssl-proxy-http"
+      },
+      {
+        "name": "https",
+        "protocol": "TCP",
+        "port": 443,
+        "targetPort": "ssl-proxy-https"
+      }
+    ],
+    "selector": {
+      "name": "nginx",
+      "role": "ssl-proxy"
+    }
+  }
+}

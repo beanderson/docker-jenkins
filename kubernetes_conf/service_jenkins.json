@@ -6,27 +6,27 @@
     "namespace": "default",
     "labels": {
       "name": "jenkins",
-      "app": "jenkins"
+      "role": "frontend"
     }
   },
   "spec": {
-    "type": "LoadBalancer",
     "ports": [
       {
         "name": "ui",
         "protocol": "TCP",
         "port": 8080,
-        "targetPort": 8080
+        "targetPort": "jenkins-http"
       },
       {
-        "name": "slave-connection",
+        "name": "discovery",
         "protocol": "TCP",
         "port": 50000,
-        "targetPort": 50000
+        "targetPort": "jenkins-disco"
       }
     ],
     "selector": {
-      "name": "jenkins"
+      "name": "jenkins",
+      "role": "leader"
     }
   }
 }
