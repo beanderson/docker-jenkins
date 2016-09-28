@@ -56,7 +56,7 @@
             ]
           },
           {
-            "name": "jenkins-nginx",
+            "name": "nginx",
             "image": "quay.io/prsn/jenkins:nginx",
             "imagePullPolicy": "Always",
             "env": [
@@ -67,6 +67,19 @@
               {
                 "name": "SERVICE_PORT_ENV_NAME",
                 "value": "JENKINS_SERVICE_PORT_UI"
+              },
+              {
+                "name": "ENABLE_LDAP_AUTH",
+                "value": "false"
+              },
+              {
+                "name": "PEROOT_PASSWORD",
+                "valueFrom": {
+                  "secretKeyRef": {
+                    "name": "jenkins-passwords",
+                    "key": "perootpass"
+                  }
+                }
               },
               {
                 "name": "ENABLE_SSL",
@@ -88,7 +101,15 @@
                 "containerPort": 443,
                 "protocol": "TCP"
               }
+            ],
+            "volumeMounts": [
+              {
+                "name": "secrets",
+                "mountPath": "/etc/secrets",
+                "readOnly": true
+              }
             ]
+            
           }
         ],
         "nodeSelector": {
@@ -100,6 +121,12 @@
             "awsElasticBlockStore": {
               "volumeID": "vol-4b26dfc8",
               "fsType": "ext4"
+            }
+          }, 
+          { 
+            "name": "secrets",
+            "secret": {
+              "secretName": "jenkins-passwords"
             }
           }
         ],

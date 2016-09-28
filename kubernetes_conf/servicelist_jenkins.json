@@ -1,0 +1,74 @@
+{
+  "kind": "ServiceList",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "jenkins",
+    "namespace": "default",
+    "labels": {
+      "name": "jenkins"
+    }
+  },
+  "items": [
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "nginx-ssl-proxy",
+        "labels": {
+          "name": "nginx",
+          "role": "ssl-proxy"
+        }
+      },
+      "spec": {
+        "type": "LoadBalancer",
+        "ports": [
+          {
+            "name": "http",
+            "protocol": "TCP",
+            "port": 80,
+            "targetPort": "ssl-proxy-http"
+          },
+          {
+            "name": "https",
+            "protocol": "TCP",
+            "port": 443,
+            "targetPort": "ssl-proxy-https"
+          }
+        ],
+        "selector": {
+          "name": "jenkins"
+        }
+      }
+    },
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "jenkins",
+        "labels": {
+          "name": "jenkins",
+          "role": "frontend"
+        }
+      },
+      "spec": {
+        "ports": [
+          {
+            "name": "ui",
+            "protocol": "TCP",
+            "port": 8080,
+            "targetPort": "jenkins-http"
+          },
+          {
+            "name": "discovery",
+            "protocol": "TCP",
+            "port": 50000,
+            "targetPort": "jenkins-disco"
+          }
+        ],
+        "selector": {
+          "name": "jenkins"
+        }
+      }
+    }
+  ]
+}
