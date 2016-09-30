@@ -1,10 +1,5 @@
 #!/bin/bash -eu
 
-# Resolve dependencies and download plugins given on the command line
-#
-# FROM jenkins
-# RUN install-plugins.sh docker-slaves github-branch-source
-
 set -o pipefail
 
 REF_DIR=${REF:-/usr/share/jenkins/ref/plugins}

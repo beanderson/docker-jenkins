@@ -1,5 +1,4 @@
 FROM centos:7
-
 MAINTAINER AIDevOps
 
 RUN yum update -y \
@@ -15,6 +14,7 @@ RUN yum update -y \
     unzip \
     zip \
     java-1.8.0-openjdk \   
+    sudo \
     && yum clean all
 
 # Add Tini
@@ -61,10 +61,10 @@ RUN mkdir /var/log/jenkins \
 EXPOSE 8080
 EXPOSE 50000
 
+USER jenkins
+
 COPY files/init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
 COPY files/executors.groovy /usr/share/jenkins/ref/init.groovy.d/executors.groovy
-
-USER jenkins
 
 COPY files/jenkins-support /usr/local/bin/jenkins-support
 COPY files/jenkins.sh /usr/local/bin/jenkins.sh
