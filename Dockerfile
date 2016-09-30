@@ -45,10 +45,8 @@ VOLUME /var/jenkins_home
 # or config file with your custom jenkins Docker image.
 RUN mkdir -p /usr/share/jenkins/ref/init.groovy.d
 
-ADD http://mirrors.jenkins-ci.org/war/$JENKINS_VERSION/jenkins.war /usr/share/jenkins/jenkins.war 
 # Install Jenkins
-# RUN curl -fsSL http://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/$JENKINS_VERSION/jenkins-war-$JENKINS_VERSION.war -o /usr/share/jenkins/jenkins.war \
-#  && echo "$JENKINS_SHA /usr/share/jenkins/jenkins.war" | sha1sum -c -
+ADD http://mirrors.jenkins-ci.org/war/$JENKINS_VERSION/jenkins.war /usr/share/jenkins/jenkins.war 
 
 # Prep Jenkins Directories
 RUN mkdir /var/log/jenkins \
@@ -63,16 +61,16 @@ RUN mkdir /var/log/jenkins \
 EXPOSE 8080
 EXPOSE 50000
 
-COPY init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
-COPY executors.groovy /usr/share/jenkins/ref/init.groovy.d/executors.groovy
+COPY files/init.groovy /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy
+COPY files/executors.groovy /usr/share/jenkins/ref/init.groovy.d/executors.groovy
 
 USER jenkins
 
-COPY jenkins-support /usr/local/bin/jenkins-support
-COPY jenkins.sh /usr/local/bin/jenkins.sh
+COPY files/jenkins-support /usr/local/bin/jenkins-support
+COPY files/jenkins.sh /usr/local/bin/jenkins.sh
 
-COPY install-plugins.sh /usr/local/bin/install-plugins.sh
-COPY plugins.txt /plugins.txt
+COPY files/install-plugins.sh /usr/local/bin/install-plugins.sh
+COPY files/plugins.txt /plugins.txt
 RUN /usr/local/bin/install-plugins.sh workflow-support jclouds-jenkins ssh-slaves token-macro durable-task docker kubernetes cloudbees-folder active-directory blueocean workflow-aggregator
 
 RUN echo 2.0 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
