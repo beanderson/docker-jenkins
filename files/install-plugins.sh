@@ -145,7 +145,6 @@ function versionFromPlugin() {
     else
         echo "latest"
     fi
-
 }
 
 function installedPlugins() {
