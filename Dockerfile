@@ -23,22 +23,23 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-stati
 RUN chmod +x /bin/tini
 
 # SET Jenkins Environment Variables
+ENV DOCKER_API_VERSION 1.23
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_SLAVE_AGENT_PORT 50000
-ENV JENKINS_VERSION 2.24
+ENV JENKINS_VERSION 2.25
 ENV JENKINS_SHA 07a2e3e4ace728fdbcc823f46068d2f8cc3cb97b
 ENV JENKINS_UC https://updates.jenkins.io
 ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
-ENV JAVA_OPTS="-Xmx8192m"
+ENV JAVA_OPTS="-Xmx4096m"
 ENV JENKINS_OPTS="--logfile=/var/log/jenkins/jenkins.log  --webroot=/var/cache/jenkins/war"
 
 # Jenkins is run with user `jenkins`, uid = 1000
 RUN useradd -d "$JENKINS_HOME" -u 1000 -m -s /bin/bash jenkins
-RUN echo "jenkins  ALL=(ALL)  ALL" >> /etc/sudoers
+RUN echo "jenkins  ALL=(ALL)  NOPASSWD: ALL" >> /etc/sudoers
 
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
-VOLUME /var/jenkins_home
+VOLUME ["/var/jenkins_home"]
 
 # `/usr/share/jenkins/ref/` contains all reference configuration we want
 # to set on a fresh new installation. Use it to bundle additional plugins
@@ -56,11 +57,14 @@ RUN mkdir /var/log/jenkins \
     && chown -R jenkins:jenkins /usr/share/jenkins/ref/init.groovy.d \
     && chown -R jenkins:jenkins /usr/share/jenkins/jenkins.war \
     && chown -R jenkins:jenkins /var/log/jenkins \
-    && chown -R jenkins:jenkins /var/cache/jenkins
+    && chown -R jenkins:jenkins /var/cache/jenkins \
+    && touch /var/run/docker.sock \
+    && chown -R jenkins:jenkins /var/run/docker.sock \
+    && curl -fsSL https://get.docker.com/ | sh \
+    && usermod -aG docker jenkins
 
 # Expose Ports for web and slave agents
-EXPOSE 8080
-EXPOSE 50000
+EXPOSE 8080 50000
 
 USER jenkins
 
@@ -72,9 +76,8 @@ COPY files/jenkins-support /usr/local/bin/jenkins-support
 COPY files/jenkins.sh /usr/local/bin/jenkins.sh
 
 COPY files/install-plugins.sh /usr/local/bin/install-plugins.sh
-COPY files/plugins.txt /plugins.txt
 
-RUN /usr/local/bin/install-plugins.sh workflow-cps-global-lib:2.3 active-directory ant blueocean bouncycastle-api build-timeout credentials-binding docker-plugin email-ext github-organization-folder gradle jclouds-jenkins matrix-auth kubernetes ssh timestamper workflow-aggregator ws-cleanup
+RUN /usr/local/bin/install-plugins.sh active-directory ant blueocean bouncycastle-api build-timeout copyartifact credentials-binding docker-build-publish docker-build-step docker-plugin email-ext github-organization-folder gradle jclouds-jenkins matrix-auth kubernetes ssh timestamper workflow-aggregator ws-cleanup
 
 RUN echo $JENKINS_VERSION > $JENKINS_HOME/jenkins.install.InstallUtil.lastExecVersion
 RUN echo $JENKINS_VERSION > $JENKINS_HOME/jenkins.install.UpgradeWizard.state
