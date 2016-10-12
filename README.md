@@ -1,9 +1,11 @@
 Docker container for jenkins master
 
-flattened dependencies and built on centos7 base image
+built on centos7 base image
 
 Quay repo:
 https://quay.io/repository/prsn/jenkins
+Quay tag:
+master
 
 Container name:
-quay.io/prsn/jenkins
+quay.io/prsn/jenkins:master
