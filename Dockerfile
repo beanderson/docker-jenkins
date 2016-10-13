@@ -27,7 +27,7 @@ ENV TINI_VERSION=v0.10.0 \
     JENKINS_HOME=/var/jenkins_home \
     JENKINS_SLAVE_AGENT_PORT=50000 \
     JENKINS_UC=https://updates.jenkins.io \
-    COPY_REFERENCE_FILE_LOG=$JENKINS_HOME/copy_reference_file.log \
+    COPY_REFERENCE_FILE_LOG=/var/jenkins_home/copy_reference_file.log \
     JAVA_OPTS="-Xmx4096m" \
     JENKINS_OPTS="--logfile=/var/log/jenkins/jenkins.log  --webroot=/var/cache/jenkins/war"
 
@@ -67,7 +67,7 @@ USER jenkins
 COPY files/init.groovy.d/ /usr/share/jenkins/ref/init.groovy.d/
 COPY files/bin /usr/local/bin/
 
-RUN /usr/local/bin/install-plugins.sh active-directory ant blueocean bouncycastle-api build-timeout copyartifact credentials-binding docker-build-publish docker-build-step docker-plugin email-ext github-organization-folder gradle jclouds-jenkins matrix-auth kubernetes ssh timestamper workflow-aggregator ws-cleanup \ 
+RUN /usr/local/bin/install-plugins.sh active-directory ant blueocean bouncycastle-api build-timeout copyartifact credentials-binding docker-build-publish docker-build-step docker-plugin email-ext envinject github-organization-folder gradle jclouds-jenkins kubernetes matrix-auth parameterized-trigger ssh timestamper workflow-aggregator ws-cleanup \ 
     && echo $JENKINS_VERSION > $JENKINS_HOME/jenkins.install.InstallUtil.lastExecVersion \
     && echo $JENKINS_VERSION > $JENKINS_HOME/jenkins.install.UpgradeWizard.state
 

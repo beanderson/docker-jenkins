@@ -20,7 +20,7 @@ credentials = new BasicSSHUserPrivateKey(CredentialsScope.GLOBAL,null,"root",new
 credentials_store.addCredentials(global_domain, credentials)
 
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-def adminUsername = System.getenv('JENKINS_ADMIN_USERNAME') ?: 'aidevops'
+def adminUsername = System.getenv('JENKINS_ADMIN_USERNAME') ?: 'admin'
 def adminPassword = System.getenv('JENKINS_ADMIN_PASSWORD') ?: 'password'
 hudsonRealm.createAccount(adminUsername, adminPassword)
 //hudsonRealm.createAccount("charles", "charles")
