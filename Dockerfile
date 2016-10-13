@@ -62,8 +62,6 @@ RUN chmod +x /bin/tini \
 # Expose Ports for web and slave agents
 EXPOSE 8080 50000
 
-COPY files/resolv.conf /etc/resolv.conf
-
 USER jenkins
 
 COPY files/init.groovy.d/ /usr/share/jenkins/ref/init.groovy.d/
