@@ -67,7 +67,7 @@ USER jenkins
 COPY files/init.groovy.d/ /usr/share/jenkins/ref/init.groovy.d/
 COPY files/bin /usr/local/bin/
 
-RUN /usr/local/bin/install-plugins.sh active-directory ant blueocean bouncycastle-api build-timeout copyartifact credentials-binding docker-build-publish docker-build-step docker-plugin email-ext envinject github-organization-folder gradle jclouds-jenkins kubernetes matrix-auth parameterized-trigger ssh timestamper workflow-aggregator ws-cleanup \ 
+RUN /usr/local/bin/install-plugins.sh active-directory ant blueocean bouncycastle-api build-timeout copyartifact credentials-binding docker-build-publish docker-build-step docker-plugin email-ext envinject github-organization-folder gradle jclouds-jenkins jobConfigHistory kubernetes matrix-auth parameterized-trigger ssh timestamper workflow-aggregator ws-cleanup \ 
     && echo $JENKINS_VERSION > $JENKINS_HOME/jenkins.install.InstallUtil.lastExecVersion \
     && echo $JENKINS_VERSION > $JENKINS_HOME/jenkins.install.UpgradeWizard.state
 
