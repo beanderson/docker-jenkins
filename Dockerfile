@@ -22,7 +22,7 @@ ENV TINI_VERSION=v0.10.0 \
 # Docker API Version
     DOCKER_API_VERSION=1.23 \
 # Jenkins Version
-    JENKINS_VERSION=2.25 \
+    JENKINS_VERSION=2.26 \
 
     JENKINS_HOME=/var/jenkins_home \
     JENKINS_SLAVE_AGENT_PORT=50000 \
@@ -33,6 +33,7 @@ ENV TINI_VERSION=v0.10.0 \
 
 RUN useradd -d "$JENKINS_HOME" -u 1000 -m -s /bin/bash jenkins \
     && echo "jenkins  ALL=(ALL)  NOPASSWD: ALL" >> /etc/sudoers \ 
+    && sed -i -e 's/Defaults    requiretty.*/ #Defaults    requiretty/g' /etc/sudoers 
 
 # Jenkins home directory is a volume, so configuration and build history
 # can be persisted and survive image upgrades
