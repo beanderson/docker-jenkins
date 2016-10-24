@@ -75,14 +75,14 @@ def strategy = new GlobalMatrixAuthorizationStrategy()
 //strategy.add(hudson.model.View.READ,'charles')
 
 //  Setting Anonymous Permissions
-// strategy.add(hudson.model.Hudson.READ,'anonymous')
+strategy.add(hudson.model.Hudson.READ,'anonymous')
 // strategy.add(hudson.model.Item.BUILD,'anonymous')
 // strategy.add(hudson.model.Item.CANCEL,'anonymous')
 // strategy.add(hudson.model.Item.DISCOVER,'anonymous')
 // strategy.add(hudson.model.Item.READ,'anonymous')
 
 // Setting Admin Permissions
-strategy.add(Jenkins.ADMINISTER, "aidevops")
+strategy.add(Jenkins.ADMINISTER, "admin")
 
 // Setting easy settings for local builds
 def local = System.getenv("BUILD").toString()
