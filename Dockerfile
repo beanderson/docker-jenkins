@@ -35,8 +35,7 @@ RUN useradd -d "$JENKINS_HOME" -u 1000 -m -s /bin/bash jenkins \
     && echo "jenkins  ALL=(ALL)  NOPASSWD: ALL" >> /etc/sudoers \ 
     && sed -i -e 's/Defaults    requiretty.*/ #Defaults    requiretty/g' /etc/sudoers 
 
-# Jenkins home directory is a volume, so configuration and build history
-# can be persisted and survive image upgrades
+# Jenkins home directory is a volume, so can be persisted and survive image upgrades
 VOLUME ["/var/jenkins_home"]
 
 # Install tini
