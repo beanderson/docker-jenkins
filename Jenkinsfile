@@ -14,11 +14,11 @@ node('centos7') {
 
       def jenkinsImage = docker.build("quay.io/prsn/jenkins:master-${env.BRANCH_NAME}", '.')
     }
-
+    
     stage('Test') {
       currentBuild.displayName="Test"
 
-      jenkinsImage.inside {
+      docker.jenkinsImage.inside {
         sh 'pwd'
       }
     }
