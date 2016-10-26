@@ -12,13 +12,13 @@ node('centos7') {
     stage('Build') {
       currentBuild.displayName="Build"
 
-      def image = docker.build("quay.io/prsn/jenkins:master-${env.BRANCH_NAME}", '.')
+      def jenkinsImage = docker.build("quay.io/prsn/jenkins:master-${env.BRANCH_NAME}", '.')
     }
 
     stage('Test') {
       currentBuild.displayName="Test"
 
-      image.inside() {
+      jenkinsImage.inside() {
         sh 'pwd'
       }
     }
@@ -30,7 +30,7 @@ node('centos7') {
 
     stage('Publish') {
       currentBuild.displayName="Publish"
-      image.push();
+      jenkinsImage.push();
     }
   }
 }
