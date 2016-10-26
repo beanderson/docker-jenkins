@@ -4,6 +4,8 @@ node('centos7') {
 
   docker.withRegistry('https://quay.io', 'quay-bryan-test') {
 
+    def jenkinsImage = docker.image("prsn/jenkins:master-${env.BRANCH_NAME}")
+
     stage('Prep') {
       currentBuild.displayName="Prep"
       checkout scm
@@ -12,7 +14,7 @@ node('centos7') {
     stage('Build') {
       currentBuild.displayName="Build"
 
-      def jenkinsImage = docker.build("prsn/jenkins:master-${env.BRANCH_NAME}", '.')
+      jenkinsImage.build()
 
       jenkinsImage.push()
     }
@@ -20,7 +22,7 @@ node('centos7') {
     stage('Test') {
       currentBuild.displayName="Test"
 
-      docker.jenkinsImage.inside {
+      jenkinsImage.inside {
         sh 'pwd'
       }
     }
