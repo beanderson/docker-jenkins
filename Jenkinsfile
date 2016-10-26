@@ -18,7 +18,7 @@ node('centos7') {
     stage('Test') {
       currentBuild.displayName="Test"
 
-      jenkinsImage.inside() {
+      jenkinsImage.withRun() {
         sh 'pwd'
       }
     }
