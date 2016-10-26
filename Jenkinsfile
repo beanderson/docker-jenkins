@@ -15,15 +15,13 @@ node('centos7') {
       currentBuild.displayName="Build"
 
       docker.build(jenkinsImage.id, '.')
-
-      jenkinsImage.push()
     }
     
     stage('Test') {
       currentBuild.displayName="Test"
 
       jenkinsImage.inside {
-        sh 'pwd'
+        sh 'whoami'
       }
     }
 
