@@ -16,8 +16,8 @@ node('centos7') {
     
     stage('Test') {
       currentBuild.displayName="Test"
-      jenkinsImage.withRun {
-        sh 'whoami'
+      jenkinsImage.inside {
+        sh 'ls'
       }
     }
 
