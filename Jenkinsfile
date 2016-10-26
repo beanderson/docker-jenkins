@@ -14,7 +14,7 @@ node('centos7') {
     stage('Build') {
       currentBuild.displayName="Build"
 
-      docker.build(jenkinsImage, '.')
+      docker.build(jenkinsImage.id, '.')
 
       jenkinsImage.push()
     }
