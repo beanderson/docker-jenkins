@@ -13,13 +13,11 @@ node('centos7') {
 
     stage('Build') {
       currentBuild.displayName="Build"
-
       docker.build(jenkinsImage.id, '.')
     }
     
     stage('Test') {
       currentBuild.displayName="Test"
-
       jenkinsImage.withRun {
         sh 'whoami'
       }
