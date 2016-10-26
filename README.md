@@ -6,5 +6,3 @@ Quay repo:
 https://quay.io/repository/prsn/jenkins
 Quay tag:
 master
-
-Edit
