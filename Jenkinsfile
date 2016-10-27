@@ -10,9 +10,8 @@ node('centos7') {
     
     stage('Prep') {
       currentBuild.displayName="Prep"
-      gitlabCommitStatus(name: 'Prep') {
-        checkout scm
-      }
+      checkout scm
+      updateGitlabCommitStatus name: 'build', state: 'pending'
     }
 
     stage('Build') {
