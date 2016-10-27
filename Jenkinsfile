@@ -5,7 +5,7 @@ node('centos7') {
     def jenkinsImage = docker.image("prsn/jenkins:master-${env.BRANCH_NAME}")
 
     // slackSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER}  ()"
-    gitlabCommitStatus
+    gitlab.gitlabCommitStatus
 
     stage('Prep') {
       currentBuild.displayName="Prep"
