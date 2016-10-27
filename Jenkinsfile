@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-properties [[$class: 'GitLabConnectionProperty', gitLabConnection: 'gitlab']]
+properties([[$class: 'GitLabConnectionProperty', gitLabConnection: 'gitlab']])
 
 node('centos7') {
   docker.withRegistry('https://quay.io', 'quay-bryan-test') {
