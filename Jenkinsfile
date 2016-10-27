@@ -5,11 +5,11 @@ node('centos7') {
     def jenkinsImage = docker.image("prsn/jenkins:master-${env.BRANCH_NAME}")
 
     // slackSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER}  ()"
-    updateGitlabCommitStatus state: 'running'
-
+    
     stage('Prep') {
       currentBuild.displayName="Prep"
       checkout scm
+      updateGitlabCommitStatus
     }
 
     stage('Build') {
@@ -32,6 +32,7 @@ node('centos7') {
     stage('Publish') {
       currentBuild.displayName="Publish"
       jenkinsImage.push()
+      updateGitlabCommitStatus state: 'success'
     }
   }
 }
