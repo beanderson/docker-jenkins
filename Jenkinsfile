@@ -10,8 +10,9 @@ node('centos7') {
     
     stage('Prep') {
       currentBuild.displayName="Prep"
-      checkout scm
-      addGitLabMRComment comment: 'This is a comment'
+      gitlabCommitStatus(name: 'Prep') {
+        checkout scm
+      }
     }
 
     stage('Build') {
@@ -34,9 +35,6 @@ node('centos7') {
     stage('Publish') {
       currentBuild.displayName="Publish"
       jenkinsImage.push()
-      gitlabCommitStatus(name: 'jenkins') {
-        // some block
-      }
     }
   }
 }
