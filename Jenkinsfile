@@ -1,11 +1,13 @@
 #!/usr/bin/env groovy
 
+properties([[$class: 'GitLabConnectionProperty', gitLabConnection: 'gitlab']])
+
 node('centos7') {
-
   docker.withRegistry('https://quay.io', 'quay-bryan-test') {
-
     def jenkinsImage = docker.image("prsn/jenkins:master-${env.BRANCH_NAME}")
 
+    // slackSend "Build Started - ${env.JOB_NAME} ${env.BUILD_NUMBER}  ()"
+    
     stage('Prep') {
       currentBuild.displayName="Prep"
       checkout scm
@@ -13,15 +15,13 @@ node('centos7') {
 
     stage('Build') {
       currentBuild.displayName="Build"
-
       docker.build(jenkinsImage.id, '.')
     }
     
     stage('Test') {
       currentBuild.displayName="Test"
-
-      jenkinsImage.withRun {
-        sh 'whoami'
+      jenkinsImage.inside {
+        sh 'ls'
       }
     }
 
