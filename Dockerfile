@@ -22,7 +22,7 @@ ENV TINI_VERSION=v0.10.0 \
 # Docker API Version
     DOCKER_API_VERSION=1.23 \
 # Jenkins Version
-    JENKINS_VERSION=2.26 \
+    JENKINS_VERSION=2.32 \
 
     JENKINS_HOME=/var/jenkins_home \
     JENKINS_SLAVE_AGENT_PORT=50000 \
@@ -41,7 +41,7 @@ VOLUME ["/var/jenkins_home"]
 # Install tini
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /bin/tini
 # Install Jenkins
-ADD http://mirrors.jenkins-ci.org/war/$JENKINS_VERSION/jenkins.war /usr/share/jenkins/jenkins.war 
+ADD http://mirrors.jenkins.io/war/$JENKINS_VERSION/jenkins.war /usr/share/jenkins/jenkins.war 
 
 # Jenkins is run with user `jenkins`, uid = 1000 & Prep Jenkins Directories & Install Docker
 RUN chmod +x /bin/tini \ 
